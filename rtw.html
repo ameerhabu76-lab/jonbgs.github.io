@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Read to Write (Voice to Text)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f0f0f0;
+    }
+
+    #start-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #output {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎙️ Read to Write</h1>
+  <button id="start-btn">Start Listening</button>
+  <p id="output">Your speech will appear here...</p>
+
+  <script>
+    const startBtn = document.getElementById('start-btn');
+    const output = document.getElementById('output');
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = 'en-US';
+
+      startBtn.addEventListener('click', () => {
+        recognition.start();
+        output.textContent = "Listening...";
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        output.textContent = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        output.textContent = 'Error: ' + event.error;
+      };
+    } else {
+      output.textContent = "Speech Recognition is not supported in this browser.";
+    }
+  </script>
+</body>
+</html>
